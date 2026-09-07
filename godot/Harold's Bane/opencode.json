@@ -4,8 +4,7 @@
     "godot": {
       "type": "local",
       "command": ["npx", "-y", "@coding-solo/godot-mcp"],
-      "environment": {
-      },
+      "environment": {},
       "enabled": true
     }
   }
