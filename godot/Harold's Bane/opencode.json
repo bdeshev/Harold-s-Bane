@@ -3,7 +3,7 @@
   "mcp": {
     "godot": {
       "type": "local",
-      "command": ["/npx", "-y", "@coding-solo/godot-mcp"],
+      "command": ["npx", "-y", "@coding-solo/godot-mcp"],
       "environment": {
       },
       "enabled": true
