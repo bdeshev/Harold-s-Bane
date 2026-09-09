@@ -1,6 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://csbqhp6nqtyve"]
+[gd_scene load_steps=18 format=3 uid="uid://csbqhp6nqtyve"]
 
-[ext_resource type="Texture2D" uid="uid://h012cak5rho6" path="res://assets/hastings-map.svg" id="1_k8dvw"]
+[ext_resource type="Texture2D" uid="uid://dvh2b7jrlxfny" path="res://assets/hastings-map.svg" id="1_k8dvw"]
 [ext_resource type="Texture2D" uid="uid://b4nvff37pgwd5" path="res://assets/infantry.svg" id="2_a3ry3"]
 [ext_resource type="Script" uid="uid://byldu7eq4dtkd" path="res://nodes/infantry.gd" id="2_ufc4x"]
 [ext_resource type="Texture2D" uid="uid://bxq0d2x34j0lh" path="res://assets/infantry_selected.svg" id="3_k8dvw"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://w8qqri3tx7ho" path="res://nodes/cavalry.gd" id="4_cav"]
 [ext_resource type="Texture2D" uid="uid://bn4atv0i4mpah" path="res://assets/cavalry.svg" id="4_gp064"]
 [ext_resource type="Script" uid="uid://di48ac11vkcux" path="res://nodes/enemy_cavalry.gd" id="5_cav"]
+[ext_resource type="Texture2D" uid="uid://buo8ae0bksrma" path="res://assets/E_cavalry.svg" id="6_ecav"]
+[ext_resource type="Texture2D" uid="uid://bsfks4cabopxo" path="res://assets/cavalry_selected.svg" id="6_sel"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ufc4x"]
 size = Vector2(136.39006, 35.71428)
@@ -25,9 +27,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_gp064")
-}, {
-"duration": 1.0,
 "texture": ExtResource("2_a3ry3")
 }],
 "loop": true,
@@ -37,6 +36,36 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sybi7"]
 size = Vector2(142.13278, 44.285675)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cav"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_sel")
+}],
+"loop": true,
+"name": &"selected",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_gp064")
+}],
+"loop": true,
+"name": &"unselected",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ecav"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_ecav")
+}],
+"loop": true,
+"name": &"unselected",
+"speed": 5.0
+}]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_y2wr3"]
 animations = [{
@@ -52,8 +81,8 @@ animations = [{
 [node name="main" type="Node2D"]
 
 [node name="map" type="Sprite2D" parent="."]
-position = Vector2(1133, 677.00006)
-scale = Vector2(9.774566, 8.704349)
+position = Vector2(1154.0002, 651)
+scale = Vector2(1.038997, 0.8953167)
 texture = ExtResource("1_k8dvw")
 
 [node name="friendly_army" type="Node2D" parent="."]
@@ -196,7 +225,7 @@ position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_cavalry"]
-sprite_frames = SubResource("SpriteFrames_sybi7")
+sprite_frames = SubResource("SpriteFrames_cav")
 animation = &"unselected"
 autoplay = "unselected"
 
@@ -217,7 +246,7 @@ position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_cavalry2"]
-sprite_frames = SubResource("SpriteFrames_sybi7")
+sprite_frames = SubResource("SpriteFrames_cav")
 animation = &"unselected"
 autoplay = "unselected"
 
@@ -239,7 +268,7 @@ position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_cavalry"]
-sprite_frames = SubResource("SpriteFrames_y2wr3")
+sprite_frames = SubResource("SpriteFrames_ecav")
 animation = &"unselected"
 autoplay = "unselected"
 
