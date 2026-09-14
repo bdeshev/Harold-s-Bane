@@ -4,13 +4,15 @@ enum State { IDLE, CHASE, ATTACK }
 
 
 @export var speed = 20
-@export var turn_speed = .5
+@export var turn_speed = 1
 @export var attack_interval := 1.0
-@export var front_damage := 5
-@export var side_damage := 10
-@export var rear_damage := 20
+@export var base_damage := 5
+@export var side_modifier := 100.0
+@export var rear_modifier := 300.0
 @export var aggro_range := 400.0
 @export var aggro_check_interval := 0.25
+@export var separation_radius := 45.0
+@export var separation_strength := 25.0
 
 @onready var range_area: Area2D = $Area2D
 
@@ -21,7 +23,9 @@ enum State { IDLE, CHASE, ATTACK }
 var state := State.IDLE
 var auto_engage := false
 var has_move_order := false
+var move_queue: Array[Vector2] = []
 var target = position
+var chase_target: Node2D
 var facing_angle := 0.0
 var health: int
 var health_bar: Node2D
@@ -31,6 +35,7 @@ var aggro_check_timer := 0.0
 
 
 func _ready():
+	add_to_group("units")
 	_setup()
 	health = max_health
 	_create_health_bar()
@@ -108,21 +113,26 @@ func _physics_process(delta):
 	else:
 		velocity = Vector2.ZERO
 
+	_apply_separation(delta)
 	_try_attack()
 
 
 func _update_state() -> void:
 	if _enemy_in_range():
 		state = State.ATTACK
-	elif auto_engage:
-		var enemy := _nearest_enemy(aggro_range)
-		if enemy != null:
-			target = enemy.global_position
+		return
+	if auto_engage:
+		if chase_target == null or chase_target.health <= 0:
+			chase_target = _nearest_enemy(aggro_range)
+		if chase_target != null:
+			target = chase_target.global_position
 			has_move_order = false
 			state = State.CHASE
 			return
+		chase_target = null
 		state = State.IDLE
-	elif state == State.CHASE:
+		return
+	if state == State.CHASE:
 		state = State.IDLE
 
 
@@ -147,9 +157,16 @@ func _nearest_enemy(max_dist: float) -> Node2D:
 
 
 func _move_toward_target(delta) -> void:
-	var to_target := position.distance_to(target)
-	if to_target > 10:
-		var desired_angle := (target - position).angle() + PI / 2.0
+	if state == State.CHASE and chase_target != null:
+		if chase_target.health > 0:
+			target = chase_target.global_position
+		else:
+			chase_target = null
+
+	var to_target := global_position.distance_to(target)
+	var stop_dist := _stop_distance()
+	if to_target > stop_dist:
+		var desired_angle := (target - global_position).angle() + PI / 2.0
 		facing_angle = rotate_toward(facing_angle, desired_angle, turn_speed * delta)
 		rotation = facing_angle
 		if is_equal_angle(facing_angle, desired_angle):
@@ -162,6 +179,41 @@ func _move_toward_target(delta) -> void:
 		has_move_order = false
 		if state == State.CHASE:
 			state = State.IDLE
+			chase_target = null
+		_advance_move_queue()
+
+
+func _advance_move_queue() -> void:
+	if move_queue.is_empty():
+		return
+	target = move_queue.pop_front()
+	has_move_order = true
+
+
+func _stop_distance() -> float:
+	if state == State.CHASE:
+		return _min_attack_range()
+	return 10.0
+
+
+func _min_attack_range() -> float:
+	var shape := range_area.get_child(0) as CollisionShape2D
+	if shape != null and shape.shape is RectangleShape2D:
+		return shape.shape.size.x * 0.25
+	return 10.0
+
+
+func _apply_separation(delta) -> void:
+	var push := Vector2.ZERO
+	for u in get_tree().get_nodes_in_group("units"):
+		if u == self or u.health <= 0 or u.is_in_group(_enemy_group()):
+			continue
+		var offset: Vector2 = global_position - u.global_position
+		var dist := offset.length()
+		if dist < separation_radius and dist > 0.01:
+			push += offset / dist * (1.0 - dist / separation_radius)
+	if push != Vector2.ZERO:
+		global_position += push.normalized() * separation_strength * delta
 
 
 func _try_attack() -> void:
@@ -179,7 +231,16 @@ func _try_attack() -> void:
 
 func order_move(dest: Vector2) -> void:
 	target = dest
+	chase_target = null
+	move_queue.clear()
 	has_move_order = true
+
+
+func queue_move(dest: Vector2) -> void:
+	if has_move_order:
+		move_queue.append(dest)
+	else:
+		order_move(dest)
 
 
 func is_equal_angle(a: float, b: float) -> bool:
@@ -191,7 +252,11 @@ func get_damage_vs(defender: Node2D) -> int:
 	var defender_forward: Vector2 = Vector2.UP.rotated(defender.facing_angle)
 	var dot := defender_forward.dot(dir_to_attacker)
 	if dot > 0.5:
-		return front_damage
+		return base_damage
 	elif dot < -0.5:
-		return rear_damage
-	return side_damage
+		return damage_modifier(rear_modifier)
+	return damage_modifier(side_modifier)
+
+
+func damage_modifier(percent: float) -> int:
+	return int(round(base_damage * (1.0 + percent / 100.0)))

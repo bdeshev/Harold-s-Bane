@@ -4,9 +4,9 @@ extends "res://nodes/infantry.gd"
 func _setup():
 	super()
 	speed = 60
-	front_damage = 15
-	side_damage = 25
-	rear_damage = 40
+	base_damage = 15
+	side_modifier = 60.0
+	rear_modifier = 160.0
 	max_health = 60
 
 

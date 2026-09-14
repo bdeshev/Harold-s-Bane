@@ -22,19 +22,48 @@ func _process(_delta):
 	super(_delta)
 	if move_arrow != null:
 		move_arrow.from_point = global_position
+		if has_move_order:
+			move_arrow.path.clear()
+			move_arrow.path.append(target)
+			move_arrow.path.append_array(move_queue)
+			move_arrow.visible = true
+		else:
+			move_arrow.visible = false
 
 
 func _unhandled_input(event):
-	if event.is_action_pressed("click"):
-		set_selected(false)
 	if event.is_action_pressed("move") and is_selected:
-		order_move(get_global_mouse_position())
+		_issue_formation_move(get_global_mouse_position(), event.shift_pressed)
 		_show_move_arrow()
 
 
+func _issue_formation_move(dest: Vector2, queued: bool) -> void:
+	var selected := get_tree().get_nodes_in_group("friendlies").filter(
+		func(u): return u.is_selected and u.health > 0
+	)
+	if selected.size() <= 1:
+		if queued:
+			queue_move(dest)
+		else:
+			order_move(dest)
+		return
+	var centroid := Vector2.ZERO
+	for u in selected:
+		centroid += u.global_position
+	centroid /= selected.size()
+	var my_dest := dest + (global_position - centroid)
+	if queued:
+		queue_move(my_dest)
+	else:
+		order_move(my_dest)
+
+
 func _on_input_event(_viewport, event, _shape_idx):
-	if event.is_action_pressed("click"):
-		set_selected(true)
+	if event.is_action_released("click"):
+		if event.shift_pressed:
+			set_selected(not is_selected)
+		else:
+			set_selected(true)
 		get_viewport().set_input_as_handled()
 
 
@@ -53,6 +82,3 @@ func _show_move_arrow() -> void:
 		move_arrow.top_level = true
 		move_arrow.z_index = 50
 		add_child(move_arrow)
-	move_arrow.from_point = global_position
-	move_arrow.to_point = target
-	move_arrow.visible = true

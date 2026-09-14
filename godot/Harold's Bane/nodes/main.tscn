@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://csbqhp6nqtyve"]
+[gd_scene format=3 uid="uid://csbqhp6nqtyve"]
 
 [ext_resource type="Texture2D" uid="uid://dvh2b7jrlxfny" path="res://assets/hastings-map.svg" id="1_k8dvw"]
 [ext_resource type="Texture2D" uid="uid://b4nvff37pgwd5" path="res://assets/infantry.svg" id="2_a3ry3"]
@@ -11,6 +11,9 @@
 [ext_resource type="Script" uid="uid://di48ac11vkcux" path="res://nodes/enemy_cavalry.gd" id="5_cav"]
 [ext_resource type="Texture2D" uid="uid://buo8ae0bksrma" path="res://assets/E_cavalry.svg" id="6_ecav"]
 [ext_resource type="Texture2D" uid="uid://bsfks4cabopxo" path="res://assets/cavalry_selected.svg" id="6_sel"]
+[ext_resource type="Script" uid="uid://b8x4k2nap5q7f" path="res://nodes/camera.gd" id="7_cam"]
+[ext_resource type="Script" uid="uid://bjgn2je1fhkhd" path="res://nodes/selection_rect.gd" id="8_sel"]
+[ext_resource type="Script" path="res://nodes/web_bootstrap.gd" id="9_web"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ufc4x"]
 size = Vector2(136.39006, 35.71428)
@@ -21,7 +24,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("3_k8dvw")
 }],
-"loop": true,
+"loop": 1,
 "name": &"selected",
 "speed": 5.0
 }, {
@@ -29,7 +32,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("2_a3ry3")
 }],
-"loop": true,
+"loop": 1,
 "name": &"unselected",
 "speed": 5.0
 }]
@@ -43,7 +46,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("6_sel")
 }],
-"loop": true,
+"loop": 1,
 "name": &"selected",
 "speed": 5.0
 }, {
@@ -51,7 +54,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("4_gp064")
 }],
-"loop": true,
+"loop": 1,
 "name": &"unselected",
 "speed": 5.0
 }]
@@ -62,7 +65,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("6_ecav")
 }],
-"loop": true,
+"loop": 1,
 "name": &"unselected",
 "speed": 5.0
 }]
@@ -73,328 +76,540 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("3_y2wr3")
 }],
-"loop": true,
+"loop": 1,
 "name": &"unselected",
 "speed": 5.0
 }]
 
-[node name="main" type="Node2D"]
+[node name="main" type="Node2D" unique_id=31849283]
+script = ExtResource("9_web")
 
-[node name="map" type="Sprite2D" parent="."]
-position = Vector2(1154.0002, 651)
-scale = Vector2(1.038997, 0.8953167)
+[node name="SelectionRect" type="Node2D" parent="." unique_id=998877001]
+z_index = 200
+script = ExtResource("8_sel")
+
+[node name="Camera" type="Camera2D" parent="." unique_id=-983963169]
+position = Vector2(1103, 939)
+zoom = Vector2(0.85, 0.85)
+script = ExtResource("7_cam")
+
+[node name="map" type="Sprite2D" parent="." unique_id=1278585194]
+position = Vector2(1162.9999, 659.00006)
+scale = Vector2(1.5, 1.26)
 texture = ExtResource("1_k8dvw")
 
-[node name="friendly_army" type="Node2D" parent="."]
+[node name="friendly_army" type="Node2D" parent="." unique_id=1787574501]
+position = Vector2(-90, 259)
 
-[node name="F_infantry" type="CharacterBody2D" parent="friendly_army" groups=["units"]]
-position = Vector2(156, 526)
+[node name="F_infantry" type="CharacterBody2D" parent="friendly_army" unique_id=1522819600 groups=["units"]]
+position = Vector2(692, 1037)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("2_ufc4x")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry" unique_id=1852777708]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry" unique_id=1304839747]
 sprite_frames = SubResource("SpriteFrames_sybi7")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry"]
+[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry" unique_id=94096615]
 
-[node name="Range" type="CollisionShape2D" parent="friendly_army/F_infantry/Area2D"]
+[node name="Range" type="CollisionShape2D" parent="friendly_army/F_infantry/Area2D" unique_id=2013894016]
 position = Vector2(-1.4355469, -8.571411)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="F_infantry2" type="CharacterBody2D" parent="friendly_army" groups=["units"]]
-position = Vector2(503, 555)
+[node name="F_infantry2" type="CharacterBody2D" parent="friendly_army" unique_id=439010035 groups=["units"]]
+position = Vector2(1131, 1151)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("2_ufc4x")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry2" unique_id=428358663]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry2"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry2" unique_id=1026487976]
 sprite_frames = SubResource("SpriteFrames_sybi7")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry2"]
+[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry2" unique_id=86722003]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry2/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry2/Area2D" unique_id=1961876948]
 position = Vector2(-1.4355469, -7.1428223)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="F_infantry3" type="CharacterBody2D" parent="friendly_army" groups=["units"]]
-position = Vector2(262, 535)
+[node name="F_infantry3" type="CharacterBody2D" parent="friendly_army" unique_id=841637258 groups=["units"]]
+position = Vector2(903, 1131)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("2_ufc4x")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry3" unique_id=1035954461]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry3"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry3" unique_id=1228426709]
 sprite_frames = SubResource("SpriteFrames_sybi7")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry3"]
+[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry3" unique_id=2043273840]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry3/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry3/Area2D" unique_id=188795521]
 position = Vector2(-1.4355469, -8.571411)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="F_infantry4" type="CharacterBody2D" parent="friendly_army" groups=["units"]]
-position = Vector2(380, 550)
+[node name="F_infantry4" type="CharacterBody2D" parent="friendly_army" unique_id=443417971 groups=["units"]]
+position = Vector2(1014, 1144)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("2_ufc4x")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry4" unique_id=1888664908]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry4"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry4" unique_id=1776672373]
 sprite_frames = SubResource("SpriteFrames_sybi7")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry4"]
+[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry4" unique_id=1094288879]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry4/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry4/Area2D" unique_id=904849132]
 position = Vector2(-1.4355469, -8.571411)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="F_infantry5" type="CharacterBody2D" parent="friendly_army" groups=["units"]]
-position = Vector2(608, 547)
+[node name="F_infantry5" type="CharacterBody2D" parent="friendly_army" unique_id=1676296677 groups=["units"]]
+position = Vector2(1258, 1146)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("2_ufc4x")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry5"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry5" unique_id=2124406416]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry5"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry5" unique_id=991046106]
 sprite_frames = SubResource("SpriteFrames_sybi7")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry5"]
+[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry5" unique_id=1645044443]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry5/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry5/Area2D" unique_id=165627185]
 position = Vector2(-1.4355469, -8.571411)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="F_infantry6" type="CharacterBody2D" parent="friendly_army" groups=["units"]]
-position = Vector2(705.99994, 541)
+[node name="F_infantry6" type="CharacterBody2D" parent="friendly_army" unique_id=477205934 groups=["units"]]
+position = Vector2(1454, 1081)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("2_ufc4x")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry6"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry6" unique_id=455826920]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry6"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry6" unique_id=1631054827]
 sprite_frames = SubResource("SpriteFrames_sybi7")
 animation = &"unselected"
 autoplay = "unselected"
 metadata/_edit_group_ = true
 
-[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry6"]
+[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry6" unique_id=1695413239]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry6/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry6/Area2D" unique_id=760090823]
 position = Vector2(-1.4355469, -8.571411)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="F_cavalry" type="CharacterBody2D" parent="friendly_army" groups=["units"]]
-position = Vector2(1079, 619)
+[node name="F_cavalry" type="CharacterBody2D" parent="friendly_army" unique_id=1076949380 groups=["units"]]
+position = Vector2(1922, 973)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("4_cav")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_cavalry"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_cavalry" unique_id=1201305306]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_cavalry"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_cavalry" unique_id=1052999439]
 sprite_frames = SubResource("SpriteFrames_cav")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="friendly_army/F_cavalry"]
+[node name="Area2D" type="Area2D" parent="friendly_army/F_cavalry" unique_id=1321982127]
 
-[node name="Range" type="CollisionShape2D" parent="friendly_army/F_cavalry/Area2D"]
+[node name="Range" type="CollisionShape2D" parent="friendly_army/F_cavalry/Area2D" unique_id=2091775903]
 position = Vector2(-1.4355469, -8.571411)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="F_cavalry2" type="CharacterBody2D" parent="friendly_army" groups=["units"]]
-position = Vector2(958, 619)
+[node name="F_cavalry2" type="CharacterBody2D" parent="friendly_army" unique_id=987117649 groups=["units"]]
+position = Vector2(1812, 969)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("4_cav")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_cavalry2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_cavalry2" unique_id=1495099554]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_cavalry2"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_cavalry2" unique_id=1169713674]
 sprite_frames = SubResource("SpriteFrames_cav")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="friendly_army/F_cavalry2"]
+[node name="Area2D" type="Area2D" parent="friendly_army/F_cavalry2" unique_id=670669371]
 
-[node name="Range" type="CollisionShape2D" parent="friendly_army/F_cavalry2/Area2D"]
+[node name="Range" type="CollisionShape2D" parent="friendly_army/F_cavalry2/Area2D" unique_id=905207086]
 position = Vector2(-1.4355469, -8.571411)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="enemy_army" type="Node2D" parent="."]
+[node name="F_infantry7" type="CharacterBody2D" parent="friendly_army" unique_id=438390117 groups=["units"]]
+position = Vector2(566, 1001.00006)
+scale = Vector2(0.6965318, 0.7)
+script = ExtResource("2_ufc4x")
+metadata/_edit_group_ = true
 
-[node name="E_cavalry" type="CharacterBody2D" parent="enemy_army" groups=["units"]]
-position = Vector2(449.5, 305.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry7" unique_id=1698400608]
+position = Vector2(-1.43573, -1.4285889)
+shape = SubResource("RectangleShape2D_ufc4x")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry7" unique_id=1463375112]
+sprite_frames = SubResource("SpriteFrames_sybi7")
+animation = &"unselected"
+autoplay = "unselected"
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry7" unique_id=422858090]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry7/Area2D" unique_id=2029634867]
+position = Vector2(-1.4355469, -8.571411)
+shape = SubResource("RectangleShape2D_sybi7")
+
+[node name="F_infantry8" type="CharacterBody2D" parent="friendly_army" unique_id=1559704278 groups=["units"]]
+position = Vector2(1576, 1029)
+scale = Vector2(0.6965318, 0.7)
+script = ExtResource("2_ufc4x")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry8" unique_id=117919107]
+position = Vector2(-1.43573, -1.4285889)
+shape = SubResource("RectangleShape2D_ufc4x")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry8" unique_id=433846649]
+sprite_frames = SubResource("SpriteFrames_sybi7")
+animation = &"unselected"
+autoplay = "unselected"
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry8" unique_id=1333630017]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry8/Area2D" unique_id=1735341060]
+position = Vector2(-1.4355469, -8.571411)
+shape = SubResource("RectangleShape2D_sybi7")
+
+[node name="F_infantry9" type="CharacterBody2D" parent="friendly_army" unique_id=750307260 groups=["units"]]
+position = Vector2(460, 929)
+scale = Vector2(0.6965318, 0.7)
+script = ExtResource("2_ufc4x")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry9" unique_id=1070241185]
+position = Vector2(-1.43573, -1.4285889)
+shape = SubResource("RectangleShape2D_ufc4x")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry9" unique_id=1847541095]
+sprite_frames = SubResource("SpriteFrames_sybi7")
+animation = &"unselected"
+autoplay = "unselected"
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry9" unique_id=318482707]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry9/Area2D" unique_id=778295537]
+position = Vector2(-1.4355469, -8.571411)
+shape = SubResource("RectangleShape2D_sybi7")
+
+[node name="F_infantry10" type="CharacterBody2D" parent="friendly_army" unique_id=948926237 groups=["units"]]
+position = Vector2(1690, 967.00006)
+scale = Vector2(0.6965318, 0.7)
+script = ExtResource("2_ufc4x")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry10" unique_id=898083157]
+position = Vector2(-1.43573, -1.4285889)
+shape = SubResource("RectangleShape2D_ufc4x")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="friendly_army/F_infantry10" unique_id=1256063205]
+sprite_frames = SubResource("SpriteFrames_sybi7")
+animation = &"unselected"
+autoplay = "unselected"
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="friendly_army/F_infantry10" unique_id=1344616061]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="friendly_army/F_infantry10/Area2D" unique_id=888495505]
+position = Vector2(-1.4355469, -8.571411)
+shape = SubResource("RectangleShape2D_sybi7")
+
+[node name="enemy_army" type="Node2D" parent="." unique_id=588086965]
+position = Vector2(581, -214)
+
+[node name="E_cavalry" type="CharacterBody2D" parent="enemy_army" unique_id=64422839 groups=["units"]]
+position = Vector2(1021, 299)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("5_cav")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_cavalry"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_cavalry" unique_id=1833480195]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_cavalry"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_cavalry" unique_id=287809360]
 sprite_frames = SubResource("SpriteFrames_ecav")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="enemy_army/E_cavalry"]
+[node name="Area2D" type="Area2D" parent="enemy_army/E_cavalry" unique_id=48180191]
 
-[node name="Range" type="CollisionShape2D" parent="enemy_army/E_cavalry/Area2D"]
+[node name="Range" type="CollisionShape2D" parent="enemy_army/E_cavalry/Area2D" unique_id=884032572]
 position = Vector2(-1.4355469, 4.2857666)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="E_infantry" type="CharacterBody2D" parent="enemy_army" groups=["units"]]
-position = Vector2(600.5, 274.49997)
+[node name="E_infantry" type="CharacterBody2D" parent="enemy_army" unique_id=643162384 groups=["units"]]
+position = Vector2(884, 342)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("3_y2wr3s")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry" unique_id=770915590]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry" unique_id=458731542]
 sprite_frames = SubResource("SpriteFrames_y2wr3")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry"]
+[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry" unique_id=121113394]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry/Area2D" unique_id=73547188]
 position = Vector2(-1.4355469, 4.2857666)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="E_infantry2" type="CharacterBody2D" parent="enemy_army" groups=["units"]]
-position = Vector2(552.5, 306.49997)
+[node name="E_infantry2" type="CharacterBody2D" parent="enemy_army" unique_id=260024478 groups=["units"]]
+position = Vector2(779, 406)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("3_y2wr3s")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry2" unique_id=1584680462]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry2"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry2" unique_id=1721042216]
 sprite_frames = SubResource("SpriteFrames_y2wr3")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry2"]
+[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry2" unique_id=901725945]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry2/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry2/Area2D" unique_id=1432185993]
 position = Vector2(-1.4355469, 4.2857666)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="E_infantry3" type="CharacterBody2D" parent="enemy_army" groups=["units"]]
-position = Vector2(498.49994, 338.49994)
+[node name="E_infantry3" type="CharacterBody2D" parent="enemy_army" unique_id=42166967 groups=["units"]]
+position = Vector2(668.99994, 469)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("3_y2wr3s")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry3" unique_id=1030296202]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry3"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry3" unique_id=2069414742]
 sprite_frames = SubResource("SpriteFrames_y2wr3")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry3"]
+[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry3" unique_id=527490354]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry3/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry3/Area2D" unique_id=1299932645]
 position = Vector2(-1.4355469, 4.2857666)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="E_infantry4" type="CharacterBody2D" parent="enemy_army" groups=["units"]]
-position = Vector2(401.5, 336.49997)
+[node name="E_infantry4" type="CharacterBody2D" parent="enemy_army" unique_id=1129990435 groups=["units"]]
+position = Vector2(46, 448)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("3_y2wr3s")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry4" unique_id=1560268207]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry4"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry4" unique_id=78793743]
 sprite_frames = SubResource("SpriteFrames_y2wr3")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry4"]
+[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry4" unique_id=471489365]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry4/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry4/Area2D" unique_id=1657316359]
 position = Vector2(-1.4355469, 4.2857666)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="E_infantry5" type="CharacterBody2D" parent="enemy_army" groups=["units"]]
-position = Vector2(347.5, 303.49997)
+[node name="E_infantry5" type="CharacterBody2D" parent="enemy_army" unique_id=982599391 groups=["units"]]
+position = Vector2(-64, 378)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("3_y2wr3s")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry5"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry5" unique_id=101956570]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry5"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry5" unique_id=138612525]
 sprite_frames = SubResource("SpriteFrames_y2wr3")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry5"]
+[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry5" unique_id=1337509493]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry5/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry5/Area2D" unique_id=32120179]
 position = Vector2(-1.4355469, 4.2857666)
 shape = SubResource("RectangleShape2D_sybi7")
 
-[node name="E_infantry6" type="CharacterBody2D" parent="enemy_army" groups=["units"]]
-position = Vector2(277.5, 273.49997)
+[node name="E_infantry6" type="CharacterBody2D" parent="enemy_army" unique_id=1866783213 groups=["units"]]
+position = Vector2(-173, 323)
 scale = Vector2(0.6965318, 0.7)
 script = ExtResource("3_y2wr3s")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry6"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry6" unique_id=1452782685]
 position = Vector2(-1.43573, -1.4285889)
 shape = SubResource("RectangleShape2D_ufc4x")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry6"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry6" unique_id=133053949]
 sprite_frames = SubResource("SpriteFrames_y2wr3")
 animation = &"unselected"
 autoplay = "unselected"
 
-[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry6"]
+[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry6" unique_id=230999209]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry6/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry6/Area2D" unique_id=1112586612]
+position = Vector2(-1.4355469, 4.2857666)
+shape = SubResource("RectangleShape2D_sybi7")
+
+[node name="E_cavalry2" type="CharacterBody2D" parent="enemy_army" unique_id=2075329483 groups=["units"]]
+position = Vector2(1140, 286)
+scale = Vector2(0.6965318, 0.7)
+script = ExtResource("5_cav")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_cavalry2" unique_id=442756998]
+position = Vector2(-1.43573, -1.4285889)
+shape = SubResource("RectangleShape2D_ufc4x")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_cavalry2" unique_id=980168279]
+sprite_frames = SubResource("SpriteFrames_ecav")
+animation = &"unselected"
+autoplay = "unselected"
+
+[node name="Area2D" type="Area2D" parent="enemy_army/E_cavalry2" unique_id=1921031365]
+
+[node name="Range" type="CollisionShape2D" parent="enemy_army/E_cavalry2/Area2D" unique_id=1802732261]
+position = Vector2(-1.4355469, 4.2857666)
+shape = SubResource("RectangleShape2D_sybi7")
+
+[node name="E_infantry7" type="CharacterBody2D" parent="enemy_army" unique_id=1164530175 groups=["units"]]
+position = Vector2(167, 492)
+scale = Vector2(0.6965318, 0.7)
+script = ExtResource("3_y2wr3s")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry7" unique_id=239521187]
+position = Vector2(-1.43573, -1.4285889)
+shape = SubResource("RectangleShape2D_ufc4x")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry7" unique_id=140736513]
+sprite_frames = SubResource("SpriteFrames_y2wr3")
+animation = &"unselected"
+autoplay = "unselected"
+
+[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry7" unique_id=1123323052]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry7/Area2D" unique_id=197113302]
+position = Vector2(-1.4355469, 4.2857666)
+shape = SubResource("RectangleShape2D_sybi7")
+
+[node name="E_infantry8" type="CharacterBody2D" parent="enemy_army" unique_id=371136037 groups=["units"]]
+position = Vector2(284, 492)
+scale = Vector2(0.6965318, 0.7)
+script = ExtResource("3_y2wr3s")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry8" unique_id=674024610]
+position = Vector2(-1.43573, -1.4285889)
+shape = SubResource("RectangleShape2D_ufc4x")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry8" unique_id=1510601219]
+sprite_frames = SubResource("SpriteFrames_y2wr3")
+animation = &"unselected"
+autoplay = "unselected"
+
+[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry8" unique_id=322992127]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry8/Area2D" unique_id=1780241077]
+position = Vector2(-1.4355469, 4.2857666)
+shape = SubResource("RectangleShape2D_sybi7")
+
+[node name="E_infantry9" type="CharacterBody2D" parent="enemy_army" unique_id=2077220866 groups=["units"]]
+position = Vector2(402, 500)
+scale = Vector2(0.6965318, 0.7)
+script = ExtResource("3_y2wr3s")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry9" unique_id=1889090756]
+position = Vector2(-1.43573, -1.4285889)
+shape = SubResource("RectangleShape2D_ufc4x")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry9" unique_id=236212631]
+sprite_frames = SubResource("SpriteFrames_y2wr3")
+animation = &"unselected"
+autoplay = "unselected"
+
+[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry9" unique_id=472023101]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry9/Area2D" unique_id=463010022]
+position = Vector2(-1.4355469, 4.2857666)
+shape = SubResource("RectangleShape2D_sybi7")
+
+[node name="E_infantry10" type="CharacterBody2D" parent="enemy_army" unique_id=968713706 groups=["units"]]
+position = Vector2(526, 505)
+scale = Vector2(0.6965318, 0.7)
+script = ExtResource("3_y2wr3s")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry10" unique_id=344324572]
+position = Vector2(-1.43573, -1.4285889)
+shape = SubResource("RectangleShape2D_ufc4x")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="enemy_army/E_infantry10" unique_id=471896250]
+sprite_frames = SubResource("SpriteFrames_y2wr3")
+animation = &"unselected"
+autoplay = "unselected"
+
+[node name="Area2D" type="Area2D" parent="enemy_army/E_infantry10" unique_id=1659102049]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_army/E_infantry10/Area2D" unique_id=807803988]
 position = Vector2(-1.4355469, 4.2857666)
 shape = SubResource("RectangleShape2D_sybi7")
 
