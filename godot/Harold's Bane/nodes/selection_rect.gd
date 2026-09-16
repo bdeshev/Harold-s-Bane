@@ -28,12 +28,13 @@ func _unhandled_input(event):
 
 func _select_units_in_rect() -> void:
 	var rect := _current_rect()
-	if rect.size.length() < min_drag:
+	var is_drag := rect.size.length() >= min_drag
+	if not is_drag and shift_held:
 		return
-	for unit in get_tree().get_nodes_in_group("friendlies"):
+	for unit in get_tree().get_nodes_in_group("controllable"):
 		if unit.health <= 0:
 			continue
-		if rect.has_point(unit.global_position):
+		if is_drag and rect.has_point(unit.global_position):
 			unit.set_selected(true)
 		elif not shift_held:
 			unit.set_selected(false)

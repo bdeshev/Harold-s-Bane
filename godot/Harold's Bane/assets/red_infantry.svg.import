@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buo8ae0bksrma"
-path="res://.godot/imported/E_cavalry.svg-706033d4689a2401d15d8a4c95b50168.ctex"
+uid="uid://lcmnadxdnwrp"
+path="res://.godot/imported/red_infantry.svg-cdd7076732d20336943f26e81473619b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/E_cavalry.svg"
-dest_files=["res://.godot/imported/E_cavalry.svg-706033d4689a2401d15d8a4c95b50168.ctex"]
+source_file="res://assets/red_infantry.svg"
+dest_files=["res://.godot/imported/red_infantry.svg-cdd7076732d20336943f26e81473619b.ctex"]
 
 [params]
 

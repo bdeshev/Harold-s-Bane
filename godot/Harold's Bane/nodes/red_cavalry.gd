@@ -1,4 +1,4 @@
-extends "res://nodes/enemy_infantry.gd"
+extends "res://nodes/red_infantry.gd"
 
 
 func _setup():
